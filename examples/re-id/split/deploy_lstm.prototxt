@@ -1,0 +1,61 @@
+name: "lstm_joints"
+input: "color_fea"
+input_dim: 10
+input_dim: 58950
+input_dim: 1
+input_dim: 1
+input: "clip_markers"
+input_dim: 10
+input_dim: 1
+input_dim: 1
+input_dim: 1
+
+#---------------------------------------------------------------------------------
+layer{
+  name: "reshape-fea"
+  type: "Reshape"
+  bottom: "color_fea"
+  top: "fc6-reshape"
+  reshape_param{
+    shape{
+      dim: 10
+      dim: 1
+      dim: 58950
+    }
+  }
+  include: { phase: TEST}
+}
+
+
+layer{
+  name: "reshape-cm"
+  type: "Reshape"
+  bottom: "clip_markers"
+  top: "reshape-cm"
+  reshape_param{
+    shape{
+      dim: 10
+      dim: 1
+    }
+  }
+  include: { phase: TEST}
+}
+layer {
+  name: "lstm1"
+  type: "LSTM"
+  bottom: "fc6-reshape"
+  bottom: "reshape-cm"
+  top: "lstm1"
+  recurrent_param {
+    num_output: 512
+    weight_filler {
+      type: "uniform"
+      min: -0.01
+      max: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}

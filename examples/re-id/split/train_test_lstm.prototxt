@@ -1,0 +1,196 @@
+name: "lstm_joints"
+layer {
+  name: "data"
+  type: "Python"
+  #top: "data"
+  top: "label"
+  top: "clip_markers"
+  top: "color_fea"
+  python_param {
+    module: "sequence_input_layer"
+    layer: "videoReadTrain_RGB"
+  }
+  include: { phase: TRAIN }
+}
+
+layer {
+  name: "data"
+  type: "Python"
+  #top: "data"
+  top: "label"
+  top: "clip_markers"
+  top: "color_fea"
+  python_param {
+    module: "sequence_input_layer"
+    layer: "videoReadTest_RGB"
+  }
+  include: { phase: TEST stage: "test-on-test" }
+}
+#layer {
+#  name: "silence_data"
+#  type: "Silence"
+#  bottom: "data"
+#  include: { phase: TRAIN }
+#}
+#layer {
+#  name: "silence_data"
+#  type: "Silence"
+#  bottom: "data"
+#  include: { phase: TEST stage: "test-on-test" }
+#}
+#------------------------------------------------------------------
+#---------------------------------------------------------------------------------
+layer{
+  name: "reshape-fea"
+  type: "Reshape"
+  bottom: "color_fea"
+  top: "fc6-reshape"
+  reshape_param{
+    shape{
+      dim: 10
+      dim: 8
+      dim: 58950
+    }
+  }
+  include: { phase: TRAIN }
+}
+layer{
+  name: "reshape-fea"
+  type: "Reshape"
+  bottom: "color"
+  top: "fc6-reshape"
+  reshape_param{
+    shape{
+      dim: 10
+      dim: 1
+      dim: 58950
+    }
+  }
+  include: { phase: TEST stage: "test-on-test" }
+}
+layer{
+  name: "reshape-label"
+  type: "Reshape"
+  bottom: "label"
+  top: "reshape-label"
+  reshape_param{
+    shape{
+      dim: 10
+      dim: 8
+    }
+  }
+  include: { phase: TRAIN }
+}
+layer{
+  name: "reshape-label"
+  type: "Reshape"
+  bottom: "label"
+  top: "reshape-label"
+  reshape_param{
+    shape{
+      dim: 10
+      dim: 1
+    }
+  }
+  include: { phase: TEST stage: "test-on-test" }
+}
+layer{
+  name: "reshape-cm"
+  type: "Reshape"
+  bottom: "clip_markers"
+  top: "reshape-cm"
+  reshape_param{
+    shape{
+      dim: 10
+      dim: 8
+    }
+  }
+  include: { phase: TRAIN }
+}
+layer{
+  name: "reshape-cm"
+  type: "Reshape"
+  bottom: "clip_markers"
+  top: "reshape-cm"
+  reshape_param{
+    shape{
+      dim: 10
+      dim: 1
+    }
+  }
+  include: { phase: TEST stage: "test-on-test" }
+}
+layer {
+  name: "lstm1"
+  type: "LSTM"
+  bottom: "fc6-reshape"
+  bottom: "reshape-cm"
+  top: "lstm1"
+  recurrent_param {
+    num_output: 512
+    weight_filler {
+      type: "uniform"
+      min: -0.01
+      max: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "lstm1-drop"
+  type: "Dropout"
+  bottom: "lstm1"
+  top: "lstm1-drop"
+  dropout_param {
+    dropout_ratio: 0.5
+  }
+}
+layer {
+  name: "fc8-final"
+  type: "InnerProduct"
+  bottom: "lstm1-drop"
+  top: "fc8-final"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 1
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 89
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+    axis: 2
+  }
+}
+layer {
+  name: "loss"
+  type: "SoftmaxWithLoss"
+  bottom: "fc8-final"
+  bottom: "reshape-label"
+  top: "loss"
+  softmax_param {
+    axis: 2
+  }
+}
+layer {
+  name: "accuracy"
+  type: "Accuracy"
+  bottom: "fc8-final"
+  bottom: "reshape-label"
+  top: "accuracy"
+  accuracy_param {
+    axis: 2
+  }
+}
