@@ -11,19 +11,20 @@ make pycaffe
 See examples/re-id for the examples in our paper.
 
 Please cite Caffe in your publications if it helps your research:
-@inproceedings{DBLP:conf/eccv/YanNSMYY16,
-  author    = {Yichao Yan and
-               Bingbing Ni and
+
+
+    @inproceedings{DBLP:conf/eccv/YanNSMYY16,
+      author = {Yichao Yan and Bingbing Ni and
                Zhichao Song and
                Chao Ma and
                Yan Yan and
                Xiaokang Yang},
-  title     = {Person Re-identification via Recurrent Feature Aggregation},
-  booktitle = {Computer Vision - {ECCV} 2016 - 14th European Conference, Amsterdam,
+      title     = {Person Re-identification via Recurrent Feature Aggregation},
+      booktitle = {Computer Vision - {ECCV} 2016 - 14th European Conference, Amsterdam,
                The Netherlands, October 11-14, 2016, Proceedings, Part {VI}},
-  pages     = {701--716},
-  year      = {2016}
-}
+      pages     = {701--716},
+      year      = {2016}
+    }
 
 # Caffe
 
