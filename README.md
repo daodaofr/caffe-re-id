@@ -2,7 +2,7 @@
 
 This is the code for paper: Person Re-Identification via Recurrent Feature Aggregation, Yichao Yan, Bingbing Ni, Zhichao Song, chao Ma, Yan Yan, xiaokang Yang, In ECCV 2016.
 
-Compile by the command line:
+Tested on Ubuntu 14.04. Compile by the command line:
 
 make all
 
