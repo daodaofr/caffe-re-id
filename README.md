@@ -1,5 +1,5 @@
 # caffe-re-id
 
-This is the code for paper: Person Re-Identification via Recurrent Feature Aggregation, Yichao Yan, Bingbing Ni, Zhichao Song, chao Ma, Yan Yan, xiaokang Yang
+This is the code for paper: Person Re-Identification via Recurrent Feature Aggregation, Yichao Yan, Bingbing Ni, Zhichao Song, chao Ma, Yan Yan, xiaokang Yang, In ECCV 2016.
 
 See examples/re-id
