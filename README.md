@@ -10,7 +10,7 @@ make pycaffe
 
 See examples/re-id for the examples in our paper.
 
-Please cite Caffe in your publications if it helps your research:
+Please cite our paper in your publications if it helps your research:
 
 
     @inproceedings{DBLP:conf/eccv/YanNSMYY16,
