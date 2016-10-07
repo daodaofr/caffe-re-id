@@ -1,12 +1,11 @@
-#from classify_video import *
+ #from classify_video import *
 import numpy as np
 import glob
 caffe_root = '../../../'
 import sys
 sys.path.insert(0,caffe_root + 'python')
 import caffe
-caffe.set_mode_gpu()
-caffe.set_device(1)
+caffe.set_mode_gpu()caffe.set_device(1)
 import pickle
 import h5py
 import random
@@ -29,7 +28,7 @@ def LRCN_ex_fea(net, mat_path):
   caffe_in = np.zeros((clip_length, fea_dim))
   clip_clip_markers = np.ones((clip_length,1,1,1))
   clip_clip_markers[0:1,:,:,:] = 0
-  f = random.randint(0,1)
+  f = random.randint(0,1) #randomly select a subsequence
   rand_frame = int(random.random()*(num_frames-clip_length)+1)
   for i in range(1):
     k=0
@@ -47,7 +46,7 @@ f.close()
 true_pred = 0
 all_test = 0
 all_fea = np.zeros((len(f_lines), 10,512))
-itr = 1
+itr = 1 #change the number to repeat several times
 for it in range(itr):
     for ix, line in enumerate(f_lines):
         video = line.split(' ')[0]
