@@ -12,7 +12,7 @@ import h5py
 import random
 from scipy.io import loadmat
 
-color_path = 'lbp_color_fea'
+color_path = 'lbp_color'
 fea_dim = 58950
 lstm_model = 'deploy_lstm.prototxt'
 RGB_lstm = 're-id.caffemodel'
